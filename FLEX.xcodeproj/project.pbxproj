@@ -167,6 +167,8 @@
 		94AAF0391BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AAF0371BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m */; };
 		94AAF03A1BAF2F0300DE8760 /* FLEXKeyboardShortcutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 942DCD821BAE0AD300DB5DC2 /* FLEXKeyboardShortcutManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C309B82F223ED64400B228EC /* FLEXLogController.h in Headers */ = {isa = PBXBuildFile; fileRef = C309B82D223ED64400B228EC /* FLEXLogController.h */; };
+		C315C7BF1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = C315C7BD1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.h */; };
+		C315C7C01FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = C315C7BE1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.m */; };
 		C33E46AF223B02CD004BD0E6 /* FLEXASLLogController.h in Headers */ = {isa = PBXBuildFile; fileRef = C33E46AD223B02CD004BD0E6 /* FLEXASLLogController.h */; };
 		C33E46B0223B02CD004BD0E6 /* FLEXASLLogController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33E46AE223B02CD004BD0E6 /* FLEXASLLogController.m */; };
 		C34A70A022B2EC8D009C2C5F /* FLEXBundleExplorerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C34A709E22B2EC8D009C2C5F /* FLEXBundleExplorerViewController.h */; };
@@ -182,6 +184,13 @@
 		C395D6DA21789BD800BEAD4D /* FLEXColorExplorerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C395D6D821789BD800BEAD4D /* FLEXColorExplorerViewController.m */; };
 		C39ED92822D63F3200B5773A /* FLEXAddressExplorerCoordinator.h in Headers */ = {isa = PBXBuildFile; fileRef = C39ED92622D63F3200B5773A /* FLEXAddressExplorerCoordinator.h */; };
 		C39ED92922D63F3200B5773A /* FLEXAddressExplorerCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = C39ED92722D63F3200B5773A /* FLEXAddressExplorerCoordinator.m */; };
+		C3A672F91FA559830025BF81 /* FLEXSwiftMirror.h in Headers */ = {isa = PBXBuildFile; fileRef = C3A672F71FA559830025BF81 /* FLEXSwiftMirror.h */; };
+		C3A672FA1FA559830025BF81 /* FLEXSwiftMirror.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A672F81FA559830025BF81 /* FLEXSwiftMirror.m */; };
+		C3A672FD1FA55A500025BF81 /* FLEXSwiftMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = C3A672FB1FA55A500025BF81 /* FLEXSwiftMethod.h */; };
+		C3A672FE1FA55A500025BF81 /* FLEXSwiftMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A672FC1FA55A500025BF81 /* FLEXSwiftMethod.m */; };
+		C3A673011FA55A590025BF81 /* FLEXSwiftType.h in Headers */ = {isa = PBXBuildFile; fileRef = C3A672FF1FA55A590025BF81 /* FLEXSwiftType.h */; };
+		C3A673021FA55A590025BF81 /* FLEXSwiftType.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A673001FA55A590025BF81 /* FLEXSwiftType.m */; };
+		C3A673051FA575E00025BF81 /* SwiftMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = C3A673041FA575E00025BF81 /* SwiftMetadata.h */; };
 		C3DA55FE21A76406005DDA60 /* FLEXMutableFieldEditorViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C3DA55FC21A76406005DDA60 /* FLEXMutableFieldEditorViewController.h */; };
 		C3DA55FF21A76406005DDA60 /* FLEXMutableFieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DA55FD21A76406005DDA60 /* FLEXMutableFieldEditorViewController.m */; };
 		C3DB9F642107FC9600B46809 /* FLEXObjectRef.h in Headers */ = {isa = PBXBuildFile; fileRef = C3DB9F622107FC9600B46809 /* FLEXObjectRef.h */; };
@@ -372,6 +381,8 @@
 		94AAF0361BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLEXKeyboardHelpViewController.h; sourceTree = "<group>"; };
 		94AAF0371BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEXKeyboardHelpViewController.m; sourceTree = "<group>"; };
 		C309B82D223ED64400B228EC /* FLEXLogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXLogController.h; sourceTree = "<group>"; };
+		C315C7BD1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXSwiftRuntimeUtility.h; sourceTree = "<group>"; };
+		C315C7BE1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXSwiftRuntimeUtility.m; sourceTree = "<group>"; };
 		C33E46AD223B02CD004BD0E6 /* FLEXASLLogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXASLLogController.h; sourceTree = "<group>"; };
 		C33E46AE223B02CD004BD0E6 /* FLEXASLLogController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXASLLogController.m; sourceTree = "<group>"; };
 		C34A709E22B2EC8D009C2C5F /* FLEXBundleExplorerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXBundleExplorerViewController.h; sourceTree = "<group>"; };
@@ -389,6 +400,13 @@
 		C395D6D821789BD800BEAD4D /* FLEXColorExplorerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXColorExplorerViewController.m; sourceTree = "<group>"; };
 		C39ED92622D63F3200B5773A /* FLEXAddressExplorerCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXAddressExplorerCoordinator.h; sourceTree = "<group>"; };
 		C39ED92722D63F3200B5773A /* FLEXAddressExplorerCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXAddressExplorerCoordinator.m; sourceTree = "<group>"; };
+		C3A672F71FA559830025BF81 /* FLEXSwiftMirror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXSwiftMirror.h; sourceTree = "<group>"; };
+		C3A672F81FA559830025BF81 /* FLEXSwiftMirror.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXSwiftMirror.m; sourceTree = "<group>"; };
+		C3A672FB1FA55A500025BF81 /* FLEXSwiftMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXSwiftMethod.h; sourceTree = "<group>"; };
+		C3A672FC1FA55A500025BF81 /* FLEXSwiftMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXSwiftMethod.m; sourceTree = "<group>"; };
+		C3A672FF1FA55A590025BF81 /* FLEXSwiftType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXSwiftType.h; sourceTree = "<group>"; };
+		C3A673001FA55A590025BF81 /* FLEXSwiftType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXSwiftType.m; sourceTree = "<group>"; };
+		C3A673041FA575E00025BF81 /* SwiftMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftMetadata.h; sourceTree = "<group>"; };
 		C3DA55FC21A76406005DDA60 /* FLEXMutableFieldEditorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXMutableFieldEditorViewController.h; sourceTree = "<group>"; };
 		C3DA55FD21A76406005DDA60 /* FLEXMutableFieldEditorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXMutableFieldEditorViewController.m; sourceTree = "<group>"; };
 		C3DB9F622107FC9600B46809 /* FLEXObjectRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXObjectRef.h; sourceTree = "<group>"; };
@@ -495,6 +513,7 @@
 		3A4C94541B5B21410088C3F2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C35B6EB722E24DA300907BA4 /* Swift */,
 				3A4C94551B5B21410088C3F2 /* FLEXHeapEnumerator.h */,
 				3A4C94561B5B21410088C3F2 /* FLEXHeapEnumerator.m */,
 				3A4C94591B5B21410088C3F2 /* FLEXResources.h */,
@@ -751,6 +770,22 @@
 			path = Globals;
 			sourceTree = "<group>";
 		};
+		C35B6EB722E24DA300907BA4 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				C3A673041FA575E00025BF81 /* SwiftMetadata.h */,
+				C315C7BD1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.h */,
+				C315C7BE1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.m */,
+				C3A672F71FA559830025BF81 /* FLEXSwiftMirror.h */,
+				C3A672F81FA559830025BF81 /* FLEXSwiftMirror.m */,
+				C3A672FB1FA55A500025BF81 /* FLEXSwiftMethod.h */,
+				C3A672FC1FA55A500025BF81 /* FLEXSwiftMethod.m */,
+				C3A672FF1FA55A590025BF81 /* FLEXSwiftType.h */,
+				C3A673001FA55A590025BF81 /* FLEXSwiftType.m */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
 		C38DF0E722CFE4140077B4AD /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,10 +905,14 @@
 				94A5151F1C4CA1F10063292F /* FLEXWindow.h in Headers */,
 				779B1ECE1C0C4D7C001F5E49 /* FLEXDatabaseManager.h in Headers */,
 				3A4C94D51B5B21410088C3F2 /* FLEXObjectExplorerViewController.h in Headers */,
+				C3A673011FA55A590025BF81 /* FLEXSwiftType.h in Headers */,
 				3A4C95011B5B21410088C3F2 /* FLEXArgumentInputTextView.h in Headers */,
+				C3A672FD1FA55A500025BF81 /* FLEXSwiftMethod.h in Headers */,
+				C3A672F91FA559830025BF81 /* FLEXSwiftMirror.h in Headers */,
 				3A4C952A1B5B21410088C3F2 /* FLEXLibrariesTableViewController.h in Headers */,
 				779B1ED41C0C4D7C001F5E49 /* FLEXTableContentCell.h in Headers */,
 				3A4C952C1B5B21410088C3F2 /* FLEXLiveObjectsTableViewController.h in Headers */,
+				C315C7BF1FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.h in Headers */,
 				3A4C94EF1B5B21410088C3F2 /* FLEXArgumentInputDateView.h in Headers */,
 				3A4C94C71B5B21410088C3F2 /* FLEXClassExplorerViewController.h in Headers */,
 				3A4C94F71B5B21410088C3F2 /* FLEXArgumentInputNotSupportedView.h in Headers */,
@@ -884,6 +923,7 @@
 				3A4C950B1B5B21410088C3F2 /* FLEXFieldEditorViewController.h in Headers */,
 				C3F31D3D2267D883003C991A /* FLEXSubtitleTableViewCell.h in Headers */,
 				94A515251C4CA2080063292F /* FLEXExplorerToolbar.h in Headers */,
+				C3A673051FA575E00025BF81 /* SwiftMetadata.h in Headers */,
 				3A4C953C1B5B21410088C3F2 /* FLEXNetworkTransaction.h in Headers */,
 				3A4C94D71B5B21410088C3F2 /* FLEXSetExplorerViewController.h in Headers */,
 				3A4C94D91B5B21410088C3F2 /* FLEXViewControllerExplorerViewController.h in Headers */,
@@ -966,6 +1006,7 @@
 					};
 					3A4C941E1B5B20570088C3F2 = {
 						CreatedOnToolsVersion = 6.4;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -1033,11 +1074,13 @@
 				3A4C94EC1B5B21410088C3F2 /* FLEXImagePreviewViewController.m in Sources */,
 				3A4C94F21B5B21410088C3F2 /* FLEXArgumentInputFontsPickerView.m in Sources */,
 				7349FD6B22B93CDF00051810 /* FLEXColor.m in Sources */,
+				C3A673021FA55A590025BF81 /* FLEXSwiftType.m in Sources */,
 				94AAF0391BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m in Sources */,
 				3A4C951F1B5B21410088C3F2 /* FLEXClassesTableViewController.m in Sources */,
 				3A4C94C61B5B21410088C3F2 /* FLEXArrayExplorerViewController.m in Sources */,
 				C3DA55FF21A76406005DDA60 /* FLEXMutableFieldEditorViewController.m in Sources */,
 				3A4C95081B5B21410088C3F2 /* FLEXDefaultEditorViewController.m in Sources */,
+				C3A672FE1FA55A500025BF81 /* FLEXSwiftMethod.m in Sources */,
 				779B1ED11C0C4D7C001F5E49 /* FLEXMultiColumnTableView.m in Sources */,
 				C3F31D412267D883003C991A /* FLEXMultilineTableViewCell.m in Sources */,
 				3A4C94EE1B5B21410088C3F2 /* FLEXArgumentInputColorView.m in Sources */,
@@ -1054,9 +1097,11 @@
 				779B1EDB1C0C4D7C001F5E49 /* FLEXTableListViewController.m in Sources */,
 				3A4C94E41B5B21410088C3F2 /* FLEXRuntimeUtility.m in Sources */,
 				3A4C94D41B5B21410088C3F2 /* FLEXObjectExplorerFactory.m in Sources */,
+				C3A672FA1FA559830025BF81 /* FLEXSwiftMirror.m in Sources */,
 				94A515171C4CA1D70063292F /* FLEXManager.m in Sources */,
 				3A4C952F1B5B21410088C3F2 /* FLEXWebViewController.m in Sources */,
 				3A4C94DC1B5B21410088C3F2 /* FLEXViewExplorerViewController.m in Sources */,
+				C315C7C01FA54C2F00425AE5 /* FLEXSwiftRuntimeUtility.m in Sources */,
 				3A4C95041B5B21410088C3F2 /* FLEXArgumentInputView.m in Sources */,
 				3A4C95411B5B21410088C3F2 /* FLEXNetworkTransactionTableViewCell.m in Sources */,
 				3A4C94D61B5B21410088C3F2 /* FLEXObjectExplorerViewController.m in Sources */,
@@ -1285,6 +1330,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.flipboard.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1307,6 +1354,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.flipboard.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

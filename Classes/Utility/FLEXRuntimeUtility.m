@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FLEXRuntimeUtility.h"
 #import "FLEXObjcInternal.h"
+#import "FLEXSwiftRuntimeUtility.h"
 
 // See https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
 NSString *const kFLEXUtilityAttributeTypeEncoding = @"T";
@@ -372,6 +373,11 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
             *error = [NSError errorWithDomain:FLEXRuntimeUtilityErrorDomain code:FLEXRuntimeUtilityErrorCodeDoesNotRecognizeSelector userInfo:userInfo];
         }
         return nil;
+    }
+
+    // Case: `object` is a Swift object or class. Does not implement methodSignatureForSelector:
+    if ([FLEXSwiftRuntimeUtility isSwiftObjectOrClass:object]) {
+        return [FLEXSwiftRuntimeUtility performSelector:selector onSwiftObject:object withArguments:arguments error:error];
     }
     
     // Build the invocation
