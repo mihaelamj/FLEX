@@ -668,7 +668,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
 }
 
 
-#pragma mark - Internal Helpers
+#pragma mark - Metadata Helpers
 
 + (NSDictionary<NSString *, NSString *> *)attributesDictionaryForProperty:(objc_property_t)property
 {
@@ -680,17 +680,6 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
         [attributesDictionary setObject:[attributePair substringFromIndex:1] forKey:[attributePair substringToIndex:1]];
     }
     return attributesDictionary;
-}
-
-+ (NSString *)appendName:(NSString *)name toType:(NSString *)type
-{
-    NSString *combined = nil;
-    if ([type characterAtIndex:type.length - 1] == FLEXTypeEncodingCString) {
-        combined = [type stringByAppendingString:name];
-    } else {
-        combined = [type stringByAppendingFormat:@" %@", name];
-    }
-    return combined;
 }
 
 + (NSString *)readableTypeForEncoding:(NSString *)encodingString
@@ -829,6 +818,44 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
 
     // If we couldn't translate, just return the original encoding string
     return encodingString;
+}
+
++ (NSString *)typeEncoding:(NSString *)typeEncoding forArgumentAtIndex:(NSUInteger)idx
+{
+    NSScanner *scan = [NSScanner scannerWithString:typeEncoding];
+    for (NSUInteger i = 0; i < idx; i++) {
+        [self scanArgument:scan];
+    }
+
+    return [self scanArgument:scan];
+}
+
++ (NSString *)scanArgument:(NSScanner *)scan
+{
+    // Check for pointer, scan next
+    if ([scan scanString:@"^" intoString:nil]) {
+        scan.scanLocation--;
+        return [self scanArgument:scan];
+    }
+
+    // Check for quotes and braces, scan to end and return
+    if ([scan scanString:@"\"" intoString:nil]) {
+
+    }
+    // Scan single thing and possible size and return
+}
+
+#pragma mark - Internal Helpers
+
++ (NSString *)appendName:(NSString *)name toType:(NSString *)type
+{
+    NSString *combined = nil;
+    if ([type characterAtIndex:type.length - 1] == FLEXTypeEncodingCString) {
+        combined = [type stringByAppendingString:name];
+    } else {
+        combined = [type stringByAppendingFormat:@" %@", name];
+    }
+    return combined;
 }
 
 + (NSValue *)valueForPrimitivePointer:(void *)pointer objCType:(const char *)type

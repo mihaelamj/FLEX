@@ -104,4 +104,10 @@ typedef NS_ENUM(char, FLEXTypeEncoding)
 + (void)enumerateTypesInStructEncoding:(const char *)structEncoding usingBlock:(void (^)(NSString *structName, const char *fieldTypeEncoding, NSString *prettyTypeEncoding, NSUInteger fieldIndex, NSUInteger fieldOffset))typeBlock;
 + (NSValue *)valueForPrimitivePointer:(void *)pointer objCType:(const char *)type;
 
+#pragma mark - Metadata Helpers
+
++ (NSDictionary<NSString *, NSString *> *)attributesDictionaryForProperty:(objc_property_t)property;
++ (NSString *)readableTypeForEncoding:(NSString *)encodingString;
++ (NSString *)typeEncoding:(NSString *)typeEncoding forArgumentAtIndex:(NSUInteger)idx;
+
 @end
