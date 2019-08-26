@@ -12,13 +12,14 @@
 
 #pragma mark MKPropertyAttributes
 
-/// See \e MirrorKit-Constants.m for valid string tokens.
+/// See \e FLEXRuntimeUtilitiy.h for valid string tokens.
 /// See this link on how to construct a proper attributes string:
 /// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html
-@interface MKPropertyAttributes : NSObject <NSCopying, NSMutableCopying> {
+@interface FLEXPropertyAttributes : NSObject <NSCopying, NSMutableCopying> {
+// These are necessary for the mutable subclass to function
 @protected
     NSUInteger _count;
-    NSString *_attributesString, *_backingIVar, *_typeEncoding, *_oldTypeEncoding;
+    NSString *_attributesString, *_backingIvar, *_typeEncoding, *_oldTypeEncoding;
     SEL _customGetter, _customSetter;
     BOOL _isReadOnly, _isCopy, _isRetained, _isNonatomic, _isDynamic, _isWeak, _isGarbageCollectable;
 }
@@ -36,7 +37,7 @@
 @property (nonatomic, readonly) NSString *attributesString;
 
 /// The name of the instance variable backing the property.
-@property (nonatomic, readonly) NSString *backingIVar;
+@property (nonatomic, readonly) NSString *backingIvar;
 /// The type encoding of the property.
 @property (nonatomic, readonly) NSString *typeEncoding;
 /// The \e old type encoding of the property.
@@ -58,13 +59,13 @@
 
 
 #pragma mark MKPropertyAttributes
-@interface MKMutablePropertyAttributes : MKPropertyAttributes
+@interface MKMutablePropertyAttributes : FLEXPropertyAttributes
 
 /// Creates and returns an empty property attributes object.
 + (instancetype)attributes;
 
 /// The name of the instance variable backing the property.
-@property (nonatomic) NSString *backingIVar;
+@property (nonatomic) NSString *backingIvar;
 /// The type encoding of the property.
 @property (nonatomic) NSString *typeEncoding;
 /// The \e old type encoding of the property.

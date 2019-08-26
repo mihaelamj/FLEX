@@ -10,10 +10,10 @@
 #import "FLEXRuntimeUtility.h"
 
 #pragma mark - MKProtocol -
-@interface MKProtocol : NSObject
+@interface FLEXProtocol : NSObject
 
 /// Every protocol registered with the runtime.
-+ (NSArray<MKProtocol*> *)allProtocols;
++ (NSArray<FLEXProtocol*> *)allProtocols;
 + (instancetype)protocol:(Protocol *)protocol;
 
 /// The underlying protocol data structure.

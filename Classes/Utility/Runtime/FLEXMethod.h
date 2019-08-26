@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MKSimpleMethod.h"
+#import "FLEXMethodBase.h"
 #import "FLEXRuntimeUtility.h"
 #import <objc/runtime.h>
 
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// of the method is unsupported by `NSMethodSignature`. In general,
 /// any method whose return type or parameters involve a struct with
 /// bitfields or arrays is unsupported.
-@interface MKMethod : MKSimpleMethod
+@interface FLEXMethod : FLEXMethodBase
 
 /// Defaults to instance method
 + (nullable instancetype)method:(Method)method;
@@ -56,10 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)debugNameGivenClassName:(NSString *)name;
 
 /// Swizzles the recieving method with the given method.
-- (void)swapImplementations:(MKMethod *)method;
+- (void)swapImplementations:(FLEXMethod *)method;
 
-#define MKMagicNumber 0xdeadbeef
-#define MKArg(expr) MKMagicNumber,/// @encode(__typeof__(expr)), (__typeof__(expr) []){ expr }
+#define FLEXMagicNumber 0xdeadbeef
+#define FLEXArg(expr) FLEXMagicNumber,/// @encode(__typeof__(expr)), (__typeof__(expr) []){ expr }
 
 /// Sends a message to \e target, and returns it's value, or \c nil if not applicable.
 /// @discussion You may send any message with this method. Primitive return values will be wrapped
@@ -74,9 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface MKMethod (Comparison)
+@interface FLEXMethod (Comparison)
 
-- (NSComparisonResult)compare:(MKMethod *)method;
+- (NSComparisonResult)compare:(FLEXMethod *)method;
 
 @end
 

@@ -6,16 +6,16 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKMethod.h"
-#import "MKMirror.h"
+#import "FLEXMethod.h"
+#import "FLEXMirror.h"
 
 
-@interface MKMethod () {
+@interface FLEXMethod () {
     NSString *__description;
 }
 @end
 
-@implementation MKMethod
+@implementation FLEXMethod
 @dynamic implementation;
 
 + (instancetype)buildMethodNamed:(NSString *)name withTypes:(NSString *)typeEncoding implementation:(IMP)implementation {
@@ -74,7 +74,7 @@
 
 - (NSString *)description {
     if (!__description) {
-        __description = [MKMethod prettyNameForMethod:self.objc_method isClassMethod:!_isInstanceMethod];
+        __description = [FLEXMethod prettyNameForMethod:self.objc_method isClassMethod:!_isInstanceMethod];
     }
     
     return __description;
@@ -144,7 +144,8 @@
         options:NSRegularExpressionSearch
         range:NSMakeRange(0, _signatureString.length)
     ];
-    _returnType        =
+    _returnType        = nil;
+#warning Left off here
 }
 
 #pragma mark Setters
@@ -157,7 +158,7 @@
 
 #pragma mark Misc
 
-- (void)swapImplementations:(MKMethod *)method {
+- (void)swapImplementations:(FLEXMethod *)method {
     method_exchangeImplementations(self.objc_method, method.objc_method);
     [self examine];
     [method examine];
@@ -169,7 +170,7 @@
     va_list args;
     va_start(args, target);
     
-    switch (self.returnType) {
+    switch (self.returnType[0]) {
         case FLEXTypeEncodingUnknown: {
             [self getReturnValue:NULL forMessageSend:target arguments:args];
             break;
@@ -317,7 +318,7 @@
 
         default: {
             [NSException raise:NSInvalidArgumentException
-                        format:@"Unsupported type encoding: %s", self.returnType];
+                        format:@"Unsupported type encoding: %s", (char *)self.returnType];
         }
     }
     
@@ -342,7 +343,7 @@
     
     for (NSUInteger i = 2; i < argumentCount; i++) {
         int cookie = va_arg(args, int);
-        if (cookie != MKMagicNumber) {
+        if (cookie != FLEXMagicNumber) {
             NSLog(@"%s: incorrect magic cookie %08x; make sure you didn\'t forget any arguments and that all arguments are wrapped in MKArg().", __func__, cookie);
             abort();
         }
@@ -373,9 +374,9 @@
 @end
 
 
-@implementation MKMethod (Comparison)
+@implementation FLEXMethod (Comparison)
 
-- (NSComparisonResult)compare:(MKMethod *)method {
+- (NSComparisonResult)compare:(FLEXMethod *)method {
     return [self.selectorString compare:method.selectorString];
 }
 

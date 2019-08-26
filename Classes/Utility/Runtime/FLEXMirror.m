@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKMirror.h"
-#import "MKProperty.h"
-#import "MKMethod.h"
-#import "MKIVar.h"
-#import "MKProtocol.h"
+#import "FLEXMirror.h"
+#import "FLEXProperty.h"
+#import "FLEXMethod.h"
+#import "FLEXIvar.h"
+#import "FLEXProtocol.h"
 #import "FLEXUtility.h"
 //#import "MirrorKit.h"
 //#import "NSObject+Reflection.h"
@@ -18,7 +18,7 @@
 
 #pragma mark - MKMirror -
 
-@implementation MKMirror
+@implementation FLEXMirror
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
@@ -60,22 +60,22 @@
     
     NSMutableArray *properties = [NSMutableArray array];
     for (int i = 0; i < pcount; i++)
-        [properties addObject:[MKProperty property:objcproperties[i]]];
+        [properties addObject:[FLEXProperty property:objcproperties[i]]];
     _properties = properties;
     
     NSMutableArray *methods = [NSMutableArray array];
     for (int i = 0; i < mcount; i++)
-        [methods addObject:[MKMethod method:objcmethods[i]]];
+        [methods addObject:[FLEXMethod method:objcmethods[i]]];
     _methods = methods;
     
     NSMutableArray *ivars = [NSMutableArray array];
     for (int i = 0; i < ivcount; i++)
-        [ivars addObject:[MKIVar ivar:objcivars[i]]];
+        [ivars addObject:[FLEXIvar ivar:objcivars[i]]];
     _instanceVariables = ivars;
     
     NSMutableArray *protocols = [NSMutableArray array];
     for (int i = 0; i < pccount; i++)
-        [protocols addObject:[MKProtocol protocol:procs[i]]];
+        [protocols addObject:[FLEXProtocol protocol:procs[i]]];
     _protocols = protocols;
     
     // Cleanup
@@ -88,40 +88,8 @@
 
 #pragma mark Misc
 
-- (MKMirror *)superMirror {
-    return [MKMirror reflect:[self.value superclass]];
-}
-
-+ (NSArray *)allClasses {
-    unsigned int count;
-    Class *buffer = objc_copyClassList(&count);
-    
-    // Unsafe classes. Cannot add them to an array.
-    Class ignored[] = {
-        NSClassFromString(@"JSExport"),
-        NSClassFromString(@"__NSAtom"),
-        NSClassFromString(@"_NSZombie_"),
-        NSClassFromString(@"__NSMessage"),
-        NSClassFromString(@"__NSMessageBuilder") };
-    
-    NSMutableArray *result = [NSMutableArray array];
-    for (NSInteger i = 0; i < count; i++) {
-        Class cls = buffer[i];
-        
-        BOOL ok = YES;
-        for (NSInteger x = 0; x < 5; x++)
-            if (cls == ignored[x]) {
-                ok = NO;
-                break;
-            }
-        
-        if (ok && NSClassFromString(NSStringFromClass(cls))) {
-            [result addObject:cls];
-        }
-    }
-    
-    free(buffer);
-    return result.copy;
+- (FLEXMirror *)superMirror {
+    return [FLEXMirror reflect:[self.value superclass]];
 }
 
 @end
@@ -129,24 +97,24 @@
 
 #pragma mark - ExtendedMirror -
 
-@implementation MKMirror (ExtendedMirror)
+@implementation FLEXMirror (ExtendedMirror)
 
-- (MKMethod *)methodNamed:(NSString *)name {
+- (FLEXMethod *)methodNamed:(NSString *)name {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"selectorString", name];
     return [self.methods filteredArrayUsingPredicate:filter].firstObject;
 }
 
-- (MKProperty *)propertyNamed:(NSString *)name {
+- (FLEXProperty *)propertyNamed:(NSString *)name {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"name", name];
     return [self.properties filteredArrayUsingPredicate:filter].firstObject;
 }
 
-- (MKIVar *)ivarNamed:(NSString *)name {
+- (FLEXIvar *)ivarNamed:(NSString *)name {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"name", name];
     return [self.instanceVariables filteredArrayUsingPredicate:filter].firstObject;
 }
 
-- (MKProtocol *)protocolNamed:(NSString *)name {
+- (FLEXProtocol *)protocolNamed:(NSString *)name {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"name", name];
     return [self.protocols filteredArrayUsingPredicate:filter].firstObject;
 }

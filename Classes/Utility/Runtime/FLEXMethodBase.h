@@ -1,5 +1,5 @@
 //
-//  MKSimpleMethod.h
+//  FLEXMethodBase.h
 //  MirrorKit
 //
 //  Created by Tanner on 7/5/15.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface MKSimpleMethod : NSObject {
+@interface FLEXMethodBase : NSObject {
 @protected
     SEL      _selector;
     NSString *_selectorString;

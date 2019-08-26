@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-@class MKIVarBuilder, MKSimpleMethod, MKProperty, MKProtocol;
+@class FLEXIvarBuilder, FLEXMethodBase, FLEXProperty, FLEXProtocol;
 
 
 #pragma mark - MKClassBuilder -
-@interface MKClassBuilder : NSObject
+@interface FLEXClassBuilder : NSObject
 
 @property (nonatomic, readonly) Class workingClass;
 
@@ -33,13 +33,13 @@
 + (instancetype)builderForClass:(Class)cls;
 
 /// @return Any methods that failed to be added.
-- (NSArray<MKSimpleMethod*> *)addMethods:(NSArray<MKSimpleMethod*> *)methods;
+- (NSArray<FLEXMethodBase*> *)addMethods:(NSArray<FLEXMethodBase*> *)methods;
 /// @return Any properties that failed to be added.
-- (NSArray<MKProperty*> *)addProperties:(NSArray<MKProperty*> *)properties;
+- (NSArray<FLEXProperty*> *)addProperties:(NSArray<FLEXProperty*> *)properties;
 /// @return Any protocols that failed to be added.
-- (NSArray<MKProtocol*> *)addProtocols:(NSArray<MKProtocol*> *)protocols;
-/// @warning Adding IVars to existing classes is not supported and will always fail.
-- (NSArray<MKIVarBuilder*> *)addIVars:(NSArray<MKIVarBuilder*> *)ivars;
+- (NSArray<FLEXProtocol*> *)addProtocols:(NSArray<FLEXProtocol*> *)protocols;
+/// @warning Adding Ivars to existing classes is not supported and will always fail.
+- (NSArray<FLEXIvarBuilder*> *)addIvars:(NSArray<FLEXIvarBuilder*> *)ivars;
 
 /// Finalizes construction of a new class.
 /// @discussion Once a class is registered, instance variables cannot be added.
@@ -51,14 +51,14 @@
 @end
 
 
-#pragma mark - MKIVarBuilder -
-@interface MKIVarBuilder : NSObject
+#pragma mark - FLEXIvarBuilder -
+@interface FLEXIvarBuilder : NSObject
 
-/// Consider using the \c MKIVarBuilderWithNameAndType() macro below. 
-/// @param name The name of the IVar, such as \c \@"_value".
-/// @param size The size of the IVar. Usually \c sizeof(type). For objects, this is \c sizeof(id).
-/// @param alignment The alignment of the IVar. Usually \c log2(sizeof(type)).
-/// @param encoding The type encoding of the IVar. For objects, this is \c \@(\@encode(id)), and for others it is \c \@(\@encode(type)).
+/// Consider using the \c FLEXIvarBuilderWithNameAndType() macro below. 
+/// @param name The name of the Ivar, such as \c \@"_value".
+/// @param size The size of the Ivar. Usually \c sizeof(type). For objects, this is \c sizeof(id).
+/// @param alignment The alignment of the Ivar. Usually \c log2(sizeof(type)).
+/// @param encoding The type encoding of the Ivar. For objects, this is \c \@(\@encode(id)), and for others it is \c \@(\@encode(type)).
 + (instancetype)name:(NSString *)name size:(size_t)size alignment:(uint8_t)alignment typeEncoding:(NSString *)encoding;
 
 @property (nonatomic, readonly) NSString *name;
@@ -69,4 +69,4 @@
 @end
 
 
-#define MKIVarBuilderWithNameAndType(nameString, type) [MKIVarBuilder name:nameString size:sizeof(type) alignment:log2(sizeof(type)) typeEncoding:@(@encode(type))]
+#define FLEXIvarBuilderWithNameAndType(nameString, type) [FLEXIvarBuilder name:nameString size:sizeof(type) alignment:log2(sizeof(type)) typeEncoding:@(@encode(type))]

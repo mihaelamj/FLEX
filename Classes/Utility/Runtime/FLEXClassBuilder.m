@@ -7,21 +7,21 @@
 //
 
 //#import "MirrorKit.h"
-//#import "NSString+Utilities.h"
-#import "MKClassBuilder.h"
-#import "MKProperty.h"
-#import "MKSimpleMethod.h"
-#import "MKProtocol.h"
+//#import "NSString+ObjcRuntime.h"
+#import "FLEXClassBuilder.h"
+#import "FLEXProperty.h"
+#import "FLEXMethodBase.h"
+#import "FLEXProtocol.h"
 #import <objc/runtime.h>
 
 
 #pragma mark - MKClassBuilder -
 
-@interface MKClassBuilder ()
+@interface FLEXClassBuilder ()
 @property (nonatomic) NSString *name;
 @end
 
-@implementation MKClassBuilder
+@implementation FLEXClassBuilder
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
@@ -70,7 +70,7 @@
     NSParameterAssert(methods.count);
     
     NSMutableArray *failed = [NSMutableArray array];
-    for (MKSimpleMethod *m in methods)
+    for (FLEXMethodBase *m in methods)
         if (!class_addMethod(self.workingClass, m.selector, m.implementation, m.typeEncoding.UTF8String))
             [failed addObject:m];
     
@@ -81,7 +81,7 @@
     NSParameterAssert(properties.count);
     
     NSMutableArray *failed = [NSMutableArray array];
-    for (MKProperty *p in properties) {
+    for (FLEXProperty *p in properties) {
         unsigned int pcount;
         objc_property_attribute_t *attributes = [p copyAttributesList:&pcount];
         if (!class_addProperty(self.workingClass, p.name.UTF8String, attributes, pcount))
@@ -96,18 +96,18 @@
     NSParameterAssert(protocols.count);
     
     NSMutableArray *failed = [NSMutableArray array];
-    for (MKProtocol *p in protocols)
+    for (FLEXProtocol *p in protocols)
         if (!class_addProtocol(self.workingClass, p.objc_protocol))
             [failed addObject:p];
     
     return failed;
 }
 
-- (NSArray *)addIVars:(NSArray *)ivars {
+- (NSArray *)addIvars:(NSArray *)ivars {
     NSParameterAssert(ivars.count);
     
     NSMutableArray *failed = [NSMutableArray array];
-    for (MKIVarBuilder *ivar in ivars)
+    for (FLEXIvarBuilder *ivar in ivars)
         if (!class_addIvar(self.workingClass, ivar.name.UTF8String, ivar.size, ivar.alignment, ivar.encoding.UTF8String))
             [failed addObject:ivar];
     
@@ -129,9 +129,9 @@
 @end
 
 
-#pragma mark - MKIVarBuilder -
+#pragma mark - FLEXIvarBuilder -
 
-@implementation MKIVarBuilder
+@implementation FLEXIvarBuilder
 
 + (instancetype)name:(NSString *)name size:(size_t)size alignment:(uint8_t)alignment typeEncoding:(NSString *)encoding {
     return [[self alloc] initWithName:name size:size alignment:alignment typeEncoding:encoding];

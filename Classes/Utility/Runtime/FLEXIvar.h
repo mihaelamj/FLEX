@@ -1,5 +1,5 @@
 //
-//  MKIVar.h
+//  FLEXIvar.h
 //  MirrorKit
 //
 //  Created by Tanner on 6/30/15.
@@ -11,7 +11,7 @@
 #import <objc/runtime.h>
 
 
-@interface MKIVar : NSObject
+@interface FLEXIvar : NSObject
 
 + (instancetype)ivar:(Ivar)ivar;
 

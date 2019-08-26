@@ -1,24 +1,24 @@
 //
-//  MKIVar.m
+//  FLEXIvar.m
 //  MirrorKit
 //
 //  Created by Tanner on 6/30/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKIVar.h"
+#import "FLEXIvar.h"
 
 
-@implementation MKIVar
+@implementation FLEXIvar
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
 #pragma mark Initializers
 + (instancetype)ivar:(Ivar)ivar {
-    return [[self alloc] initWithIVar:ivar];
+    return [[self alloc] initWithIvar:ivar];
 }
 
-- (id)initWithIVar:(Ivar)ivar {
+- (id)initWithIvar:(Ivar)ivar {
     NSParameterAssert(ivar);
     
     self = [super init];

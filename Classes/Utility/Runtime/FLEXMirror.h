@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-@class MKMethod, MKProperty, MKIVar, MKProtocol;
+@class FLEXMethod, FLEXProperty, FLEXIvar, FLEXProtocol;
 #import <objc/runtime.h>
 
 
 #pragma mark MKMirror
-@interface MKMirror : NSObject
+@interface FLEXMirror : NSObject
 
 /// Reflects an instance of an object or \c Class.
 /// @discussion \c MKMirror will immediately gather all useful information. Consider using the
@@ -34,32 +34,26 @@
 /// The name of the \c Class of the \c value property.
 @property (nonatomic, readonly) NSString *className;
 
-@property (nonatomic, readonly) NSArray<MKProperty*> *properties;
-@property (nonatomic, readonly) NSArray<MKIVar*>     *instanceVariables;
-@property (nonatomic, readonly) NSArray<MKMethod*>   *methods;
-@property (nonatomic, readonly) NSArray<MKProtocol*> *protocols;
+@property (nonatomic, readonly) NSArray<FLEXProperty*> *properties;
+@property (nonatomic, readonly) NSArray<FLEXIvar*>     *instanceVariables;
+@property (nonatomic, readonly) NSArray<FLEXMethod*>   *methods;
+@property (nonatomic, readonly) NSArray<FLEXProtocol*> *protocols;
 
 /// @return A reflection of \c value.superClass.
-@property (nonatomic, readonly) MKMirror *superMirror;
-
-/// @discussion This method is very likely to cause a crash, use at your own risk.
-/// Some classes are just not save to touch at all. I did my best to hard code in some unsafe
-/// classes to avoid, but Apple might add more at any time.
-/// @return An array of all classes known to the runtime.
-+ (NSArray *)allClasses;
+@property (nonatomic, readonly) FLEXMirror *superMirror;
 
 @end
 
 
-@interface MKMirror (ExtendedMirror)
+@interface FLEXMirror (ExtendedMirror)
 
 /// @return The method with the given name, or \c nil if one does not exist.
-- (MKMethod *)methodNamed:(NSString *)name;
+- (FLEXMethod *)methodNamed:(NSString *)name;
 /// @return The property with the given name, or \c nil if one does not exist.
-- (MKProperty *)propertyNamed:(NSString *)name;
+- (FLEXProperty *)propertyNamed:(NSString *)name;
 /// @return The instance variable with the given name, or \c nil if one does not exist.
-- (MKIVar *)ivarNamed:(NSString *)name;
+- (FLEXIvar *)ivarNamed:(NSString *)name;
 /// @return The protocol with the given name, or \c nil if one does not exist.
-- (MKProtocol *)protocolNamed:(NSString *)name;
+- (FLEXProtocol *)protocolNamed:(NSString *)name;
 
 @end

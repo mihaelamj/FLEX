@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKProperty.h"
-#import "MKPropertyAttributes.h"
-#import "MKSimpleMethod.h"
-//#import "NSString+Utilities.h"
+#import "FLEXProperty.h"
+#import "FLEXPropertyAttributes.h"
+#import "FLEXMethodBase.h"
+//#import "NSString+ObjcRuntime.h"
 //#import "NSObject+Reflection.h"
 
 
-@implementation MKProperty
+@implementation FLEXProperty
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
@@ -23,10 +23,10 @@
 }
 
 + (instancetype)propertyWithName:(NSString *)name attributesString:(NSString *)attributesString {
-    return [self propertyWithName:name attributes:[MKPropertyAttributes attributesFromString:attributesString]];
+    return [self propertyWithName:name attributes:[FLEXPropertyAttributes attributesFromString:attributesString]];
 }
 
-+ (instancetype)propertyWithName:(NSString *)name attributes:(MKPropertyAttributes *)attributes {
++ (instancetype)propertyWithName:(NSString *)name attributes:(FLEXPropertyAttributes *)attributes {
     return [[self alloc] initWithName:name attributes:attributes];
 }
 
@@ -36,7 +36,7 @@
     self = [super init];
     if (self) {
         _objc_property = property;
-        _attributes    = [MKPropertyAttributes attributesFromString:@(property_getAttributes(self.objc_property))];
+        _attributes    = [FLEXPropertyAttributes attributesFromString:@(property_getAttributes(self.objc_property))];
         _name          = @(property_getName(self.objc_property));
         
         if (!_attributes) [NSException raise:NSInternalInconsistencyException format:@"Error retrieving property attributes"];
@@ -48,7 +48,7 @@
     return self;
 }
 
-- (id)initWithName:(NSString *)name attributes:(MKPropertyAttributes *)attributes {
+- (id)initWithName:(NSString *)name attributes:(FLEXPropertyAttributes *)attributes {
     NSParameterAssert(name); NSParameterAssert(attributes);
     
     self = [super init];
@@ -81,17 +81,17 @@
 }
 
 #pragma mark Suggested getters and setters
-- (MKSimpleMethod *)getterWithImplementation:(IMP)implementation {
+- (FLEXMethodBase *)getterWithImplementation:(IMP)implementation {
     NSString *types        = [NSString stringWithFormat:@"%@%s%s", self.attributes.typeEncoding, @encode(id), @encode(SEL)];
     NSString *name         = [NSString stringWithFormat:@"%@", self.name];
-    MKSimpleMethod *getter = [MKSimpleMethod buildMethodNamed:name withTypes:types implementation:implementation];
+    FLEXMethodBase *getter = [FLEXMethodBase buildMethodNamed:name withTypes:types implementation:implementation];
     return getter;
 }
 
-- (MKSimpleMethod *)setterWithImplementation:(IMP)implementation {
+- (FLEXMethodBase *)setterWithImplementation:(IMP)implementation {
     NSString *types        = [NSString stringWithFormat:@"%s%s%s%@", @encode(void), @encode(id), @encode(SEL), self.attributes.typeEncoding];
     NSString *name         = [NSString stringWithFormat:@"set%@:", self.name.capitalizedString];
-    MKSimpleMethod *setter = [MKSimpleMethod buildMethodNamed:name withTypes:types implementation:implementation];
+    FLEXMethodBase *setter = [FLEXMethodBase buildMethodNamed:name withTypes:types implementation:implementation];
     return setter;
 }
 

@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKProtocolBuilder.h"
-#import "MKProtocol.h"
-#import "MKProperty.h"
+#import "FLEXProtocolBuilder.h"
+#import "FLEXProtocol.h"
+#import "FLEXProperty.h"
 #import <objc/runtime.h>
 
-@interface MKProtocolBuilder ()
+@interface FLEXProtocolBuilder ()
 @property (nonatomic) Protocol *workingProtocol;
 @property (nonatomic) NSString *name;
 @end
 
-@implementation MKProtocolBuilder
+@implementation FLEXProtocolBuilder
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
@@ -46,7 +46,7 @@
 
 #pragma mark Building
 
-- (void)addProperty:(MKProperty *)property isRequired:(BOOL)isRequired {
+- (void)addProperty:(FLEXProperty *)property isRequired:(BOOL)isRequired {
     if (self.isRegistered) [NSException raise:NSInternalInconsistencyException format:@"Properties cannot be added once a protocol has been registered"];
     
     unsigned int count;
@@ -65,12 +65,12 @@
     protocol_addProtocol(self.workingProtocol, protocol);
 }
 
-- (MKProtocol *)registerProtocol {
+- (FLEXProtocol *)registerProtocol {
     if (self.isRegistered) [NSException raise:NSInternalInconsistencyException format:@"Protocol is already registered"];
     
     _isRegistered = YES;
     objc_registerProtocol(self.workingProtocol);
-    return [MKProtocol protocol:self.workingProtocol];
+    return [FLEXProtocol protocol:self.workingProtocol];
 }
 
 @end

@@ -1,14 +1,14 @@
 //
-//  MKSimpleMethod.m
+//  FLEXMethodBase.m
 //  MirrorKit
 //
 //  Created by Tanner on 7/5/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKSimpleMethod.h"
+#import "FLEXMethodBase.h"
 
-@implementation MKSimpleMethod
+@implementation FLEXMethodBase
 
 #pragma mark Initializers
 

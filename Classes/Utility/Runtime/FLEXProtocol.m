@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import "MKProtocol.h"
-#import "MKProperty.h"
+#import "FLEXProtocol.h"
+#import "FLEXProperty.h"
 #import <objc/runtime.h>
 
 
-@implementation MKProtocol
+@implementation FLEXProtocol
 
 - (id)init { [NSException raise:NSInternalInconsistencyException format:@"Class instance should not be created with -init"]; return nil; }
 
@@ -62,12 +62,12 @@
     
     NSMutableArray *properties = [NSMutableArray array];
     for (int i = 0; i < prcount; i++)
-        [properties addObject:[MKProperty property:objcproperties[i]]];
+        [properties addObject:[FLEXProperty property:objcproperties[i]]];
     _properties = properties;
     
     NSMutableArray *protocols = [NSMutableArray array];
     for (int i = 0; i < pccount; i++)
-        [protocols addObject:[MKProtocol protocol:objcprotocols[i]]];
+        [protocols addObject:[FLEXProtocol protocol:objcprotocols[i]]];
     _protocols = protocols;
     
     NSMutableArray *requiredMethods = [NSMutableArray array];
