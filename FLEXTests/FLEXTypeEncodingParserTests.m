@@ -21,7 +21,7 @@
 
 - (void)setUp {
     _typesToSizes = @{
-        TypeSizePair(NSDecimal),
+        Type(NSDecimal) : @-1, // Real size is 16 on 64 bit machines
         TypeSizePair(char),
         TypeSizePair(short),
         TypeSizePair(int),

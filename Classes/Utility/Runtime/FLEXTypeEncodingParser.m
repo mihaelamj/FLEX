@@ -13,9 +13,19 @@
 
 @interface FLEXTypeEncodingParser ()
 @property (nonatomic, readonly) NSScanner *scan;
+@property (nonatomic, readonly) NSString *scanned;
+@property (nonatomic, readonly) NSString *unscanned;
 @end
 
 @implementation FLEXTypeEncodingParser
+
+- (NSString *)scanned {
+    return [self.scan.string substringToIndex:self.scan.scanLocation];
+}
+
+- (NSString *)unscanned {
+    return [self.scan.string substringFromIndex:self.scan.scanLocation];
+}
 
 #pragma mark Initialization
 
@@ -23,6 +33,7 @@
     self = [super init];
     if (self) {
         _scan = [NSScanner scannerWithString:typeEncoding];
+        _scan.caseSensitive = YES;
     }
 
     return self;
@@ -49,7 +60,7 @@
 }
 
 + (ssize_t)sizeForTypeEncoding:(NSString *)typeEncoding {
-    return [[[self alloc] initWithObjCTypes:typeEncoding] scanAndGetSizeAndAlignForNextType:nil] / 8;
+    return [[[self alloc] initWithObjCTypes:typeEncoding] scanAndGetSizeAndAlignForNextType:nil];
 }
 
 #pragma mark Private
@@ -82,7 +93,7 @@
     }
 }
 
-/// Size in BITS
+/// Size in bytes
 - (ssize_t)scanAndGetSizeAndAlignForNextType:(ssize_t *)alignment {
     NSUInteger start = self.scan.scanLocation;
 
@@ -98,7 +109,7 @@
     if ([self scanChar:FLEXTypeEncodingPointer]) {
         // Recurse to scan something else
         if ([self scanPastArg]) {
-            return sizeof(uintptr_t) * 8;
+            return [self sizeForType:FLEXTypeEncodingPointer];
         } else {
             // Scan failed, abort
             self.scan.scanLocation = start;
@@ -122,14 +133,25 @@
         }
 
         // Scan the next thing until we scan the closing tag
+        BOOL structOrUnion = NO;
         self.scan.scanLocation = backup;
         FLEXTypeEncoding closing;
         if ([self scanChar:FLEXTypeEncodingStructBegin]) {
             closing = FLEXTypeEncodingStructEnd;
+            structOrUnion = YES;
         } else if ([self scanChar:FLEXTypeEncodingUnionBegin]) {
             closing = FLEXTypeEncodingUnionEnd;
+            structOrUnion = YES;
         } else {
+            assert([self scanChar:FLEXTypeEncodingArrayBegin]);
             closing = FLEXTypeEncodingArrayEnd;
+        }
+
+        if (structOrUnion) {
+            // If we encounter the ?= portion of something like {?=b8b4b1b1b18[8S]}
+            // then we skip over it, since it means nothing to us in this context.
+            // It is completely optional, and if it fails, we go right back where we were.
+            [self scanTypeName];
         }
 
         // Sum sizes of members together:
@@ -141,17 +163,13 @@
         ssize_t maxAlign = 0;
 
         while (![self scanChar:closing]) {
-            // Check for bitfields; sum their bits together
-            // as long as they are consecutive
-            ssize_t bits = 0;
-            while ([self scanChar:FLEXTypeEncodingBitField]) {
-                ssize_t currentBits = [self scanSize];
-                if (!currentBits) {
-                    // Bitfield did not have size after
-                    self.scan.scanLocation = start;
-                    return -1;
-                }
+            // Check for bitfields, which we cannot support because
+            // type encodings for bitfields do not include alignment info
+            if ([self scanChar:FLEXTypeEncodingBitField]) {
+                self.scan.scanLocation = start;
+                return -1;
             }
+
             ssize_t align = 0;
             ssize_t size = [self scanAndGetSizeAndAlignForNextType:&align];
             if (size == -1) {
@@ -162,21 +180,15 @@
             maxAlign = MAX(maxAlign, align);
         }
 
-#warning Calculate alignment to get proper size?
-        return sizeSoFar; // Bits
-    }
-
-    // If we encounter the ?= portion of something like {?=b8b4b1b1b18[8S]}
-    // then we skip over it, since it means nothing to us in this context
-    if ([self scanChar:FLEXTypeEncodingUnknown]) {
-        if (![self scanString:@"="]) {
-            // No size information available for strings like {?}
-            self.scan.scanLocation = start;
-            return -1;
+        if (alignment) {
+            *alignment = maxAlign;
         }
+
+        return sizeSoFar;
     }
 
     // Scan single thing and possible size and return
+    ssize_t size = 0;
     FLEXTypeEncoding t;
     if ([self scanChar:FLEXTypeEncodingUnknown into:&t] ||
       [self scanChar:FLEXTypeEncodingChar into:&t] ||
@@ -197,30 +209,33 @@
       [self scanChar:FLEXTypeEncodingSelector into:&t] ||
       [self scanChar:FLEXTypeEncodingBitField into:&t]) {
         // Size is optional
-        ssize_t size = [self scanSize];
+        size = [self scanSize];
         if (t == FLEXTypeEncodingBitField) {
-            if (size) {
-                return size; // Bits
-            } else {
-                [NSException raise:NSInternalInconsistencyException
-                            format:@"Invalid type encoding: bitfield without size"];
-            }
-        } else if (size) {
-            return size * 8; // Bytes, so * 8
+            return -1;
         } else {
-            return [self sizeForType:t] * 8; // Bytes, so * 8
+            // Compute size if not included
+            if (!size) {
+                size = [self sizeForType:t];
+            }
         }
     }
 
     // These might have numbers OR quotes after them
     if ([self scanChar:FLEXTypeEncodingObjcObject] || [self scanChar:FLEXTypeEncodingObjcClass]) {
-        ssize_t size = [self scanSize];
+        size = [self scanSize];
         [self scanPair:FLEXTypeEncodingQuote close:FLEXTypeEncodingQuote];
-        if (size) {
-            return size * 8; // Bytes, so * 8
-        } else {
-            return sizeof(id) * 8;
+        if (!size) {
+            size = sizeof(id);
         }
+    }
+
+    if (size) {
+        // Alignment of scalar types is its size
+        if (alignment) {
+            *alignment = size;
+        }
+
+        return size;
     }
 
     self.scan.scanLocation = start;
@@ -287,7 +302,10 @@
     NSMutableArray *stack = [NSMutableArray arrayWithObject:s1];
 
     // Algorithm for scanning to the closing end of a pair of opening/closing symbols
-    while ([self.scan scanUpToCharactersFromSet:bothChars intoString:nil]) {
+    // scanUpToCharactersFromSet:intoString: returns NO if you're already at one of the chars,
+    // so we need to check if we can actually scan one if it returns NO
+    while ([self.scan scanUpToCharactersFromSet:bothChars intoString:nil] ||
+           [self canScanChar:c1] || [self canScanChar:c2]) {
         // Opening symbol found
         if ([self scanChar:c1]) {
             // Begin pair
@@ -303,6 +321,10 @@
 
             // Pair found, pop opening symbol
             [stack removeLastObject];
+            // Exit loop if we reached the closing brace we needed
+            if (!stack.count) {
+                break;
+            }
         }
     }
 
@@ -391,6 +413,27 @@
     return [self.scan.string
         substringWithRange:NSMakeRange(start, self.scan.scanLocation - start)
     ];
+}
+
+- (BOOL)scanTypeName {
+    NSUInteger start = self.scan.scanLocation;
+
+    // The ?= portion of something like {?=b8b4b1b1b18[8S]}
+    if ([self scanChar:FLEXTypeEncodingUnknown]) {
+        if (![self scanString:@"="]) {
+            // No size information available for strings like {?}
+            self.scan.scanLocation = start;
+            return NO;
+        }
+    } else if ([self.scan scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:nil]) {
+        if (![self scanString:@"="]) {
+            // No size information available for strings like {CGPoint}
+            self.scan.scanLocation = start;
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 @end
