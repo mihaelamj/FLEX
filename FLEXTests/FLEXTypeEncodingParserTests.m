@@ -13,14 +13,33 @@
 #define Type(t) @(@encode(t))
 #define TypeSizePair(t) Type(t): @(sizeof(t))
 
-@interface FLEXTypeEncodingParserTests : XCTestCase
+@interface FLEXTypeEncodingParserTests : XCTestCase{
+    struct {
+        id __unsafe_unretained *bar;
+        void (*foo[5])(void);
+        SEL abc;
+        Class cls;
+        int baz;
+        NSString * __unsafe_unretained str;
+        id<NSCopying, NSCoding> __unsafe_unretained proto;
+        NSDictionary<NSCopying, NSCoding> * __unsafe_unretained another;
+    } _yikes;
+}
+
 @property (nonatomic, readonly) NSDictionary<NSString *, NSNumber *> *typesToSizes;
 @end
+
+typedef struct Anon {
+    NSString<NSCopying,NSCoding> *bar;
+    int baz;
+} Anon;
 
 @implementation FLEXTypeEncodingParserTests
 
 - (void)setUp {
     _typesToSizes = @{
+        TypeSizePair(__typeof__(_yikes)),
+        @"{Anon=\"bar\"@\"NSString<NSCopying><NSCoding>\"\"baz\"i}" : @(sizeof(Anon)),
         Type(NSDecimal) : @-1, // Real size is 16 on 64 bit machines
         TypeSizePair(char),
         TypeSizePair(short),
@@ -142,11 +161,6 @@
     XCTAssertEqual(RoundUpToMultipleOf4(11), 12);
     XCTAssertEqual(RoundUpToMultipleOf4(12), 12);
     XCTAssertEqual(RoundUpToMultipleOf4(13), 16);
-
-    // Test expected type encodings
-    char *fooBytes = @encode(FooBytes);
-    char *fooInts = @encode(FooInts);
-    char *bar = nil;
 }
 
 @end

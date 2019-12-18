@@ -18,8 +18,12 @@
 /// Pass 0 to get the size of the return value. 1 and 2 are `self` and `_cmd` respectively.
 + (ssize_t)size:(NSString *)typeEncoding forMethodArgumentAtIndex:(NSUInteger)idx;
 
+/// @param unaligned whether to compute the aligned or unaligned size.
 /// @return The size in bytes.
 /// Do not pass the result of method_getTypeEncoding
-+ (ssize_t)sizeForTypeEncoding:(NSString *)typeEncoding;
++ (ssize_t)sizeForTypeEncoding:(NSString *)typeEncoding unaligned:(BOOL)unaligned;
+
+/// Defaults to \C unaligned:NO
++ (ssize_t)sizeForTypeEncoding:(NSString *)type;
 
 @end

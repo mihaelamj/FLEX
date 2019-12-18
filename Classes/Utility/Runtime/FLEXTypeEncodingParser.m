@@ -59,8 +59,24 @@
     return [self sizeForTypeEncoding:[self type:typeEncoding forMethodArgumentAtIndex:idx]];
 }
 
-+ (ssize_t)sizeForTypeEncoding:(NSString *)typeEncoding {
-    return [[[self alloc] initWithObjCTypes:typeEncoding] scanAndGetSizeAndAlignForNextType:nil];
++ (ssize_t)sizeForTypeEncoding:(NSString *)type {
+    return [self sizeForTypeEncoding:type unaligned:NO];
+}
+
++ (ssize_t)sizeForTypeEncoding:(NSString *)type unaligned:(BOOL)unaligned {
+    ssize_t align = 0;
+    ssize_t size = [[[self alloc] initWithObjCTypes:type] scanAndGetSizeAndAlignForNextType:&align];
+
+    if (size == -1) {
+        return size;
+    }
+
+    if (unaligned) {
+        return size;
+    } else {
+        size += size % align;
+        return size;
+    }
 }
 
 #pragma mark Private
@@ -109,7 +125,11 @@
     if ([self scanChar:FLEXTypeEncodingPointer]) {
         // Recurse to scan something else
         if ([self scanPastArg]) {
-            return [self sizeForType:FLEXTypeEncodingPointer];
+            ssize_t size = [self sizeForType:FLEXTypeEncodingPointer];
+            if (alignment) {
+                *alignment = size;
+            }
+            return size;
         } else {
             // Scan failed, abort
             self.scan.scanLocation = start;
@@ -169,6 +189,9 @@
                 self.scan.scanLocation = start;
                 return -1;
             }
+
+            // Structure fields could be named
+            [self scanPair:FLEXTypeEncodingQuote close:FLEXTypeEncodingQuote];
 
             ssize_t align = 0;
             ssize_t size = [self scanAndGetSizeAndAlignForNextType:&align];
@@ -306,11 +329,6 @@
     // so we need to check if we can actually scan one if it returns NO
     while ([self.scan scanUpToCharactersFromSet:bothChars intoString:nil] ||
            [self canScanChar:c1] || [self canScanChar:c2]) {
-        // Opening symbol found
-        if ([self scanChar:c1]) {
-            // Begin pair
-            [stack addObject:s1];
-        }
         // Closing symbol found
         if ([self scanChar:c2]) {
             if (!stack.count) {
@@ -325,6 +343,11 @@
             if (!stack.count) {
                 break;
             }
+        }
+        // Opening symbol found
+        if ([self scanChar:c1]) {
+            // Begin pair
+            [stack addObject:s1];
         }
     }
 
