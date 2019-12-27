@@ -351,16 +351,21 @@
 
 - (void)updateSearchResults:(NSString *)searchString
 {
-    [self onBackgroundQueue:^NSArray *{
-        return [self.networkTransactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FLEXNetworkTransaction *transaction, NSDictionary<NSString *, id> *bindings) {
-            return [[transaction.request.URL absoluteString] rangeOfString:searchString options:NSCaseInsensitiveSearch].length > 0;
-        }]];
-    } thenOnMainQueue:^(NSArray *filteredNetworkTransactions) {
-        if ([self.searchText isEqual:searchString]) {
-            self.filteredNetworkTransactions = filteredNetworkTransactions;
-            [self.tableView reloadData];
-        }
-    }];
+    if (searchString.length) {
+        [self onBackgroundQueue:^NSArray *{
+            return [self.networkTransactions filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FLEXNetworkTransaction *transaction, NSDictionary<NSString *, id> *bindings) {
+                return [[transaction.request.URL absoluteString] rangeOfString:searchString options:NSCaseInsensitiveSearch].length > 0;
+            }]];
+        } thenOnMainQueue:^(NSArray *filteredNetworkTransactions) {
+            if ([self.searchText isEqual:searchString]) {
+                self.filteredNetworkTransactions = filteredNetworkTransactions;
+                [self.tableView reloadData];
+            }
+        }];
+    } else {
+        self.filteredNetworkTransactions = self.networkTransactions;
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark UISearchControllerDelegate
