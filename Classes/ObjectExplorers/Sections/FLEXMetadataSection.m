@@ -151,7 +151,7 @@
 }
 
 - (NSString *)reuseIdentifierForRow:(NSInteger)row {
-    return kFLEXDetailCell;
+    return kFLEXCodeFontCell;
 }
 
 - (UIViewController *)viewControllerToPushForRow:(NSInteger)row {
